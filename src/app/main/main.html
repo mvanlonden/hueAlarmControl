@@ -1,0 +1,49 @@
+<div layout="column">
+
+  <md-toolbar class="md-default">
+    <div class="md-toolbar-tools">
+      <span class="md-flex">Phil Hau5</span>
+    </div>
+  </md-toolbar>
+  <md-content>
+
+    <div class="techs" layout-align="center">
+      <md-card ng-repeat="(key, group) in groups">
+        <md-card-content>
+        <!--<md-card-content ng-style="{'background-color': 'hsla({{light.state.hue / 182.04}}, {{light.state.sat / 255 * 100}}%, {{light.state.bri / 255 * 100}}%, 1)'}">-->
+          <h3>{{group.name}}</h3>
+          <form name="alarmForm">
+            <div layout="row">
+            <md-input-container flex>
+              <label>Hour</label>
+              <input required type="number" step="any" name="time" min="1" max="12" ng-model="group.time.hour">
+            </md-input-container>
+            <md-input-container flex>
+              <label>Minute</label>
+              <input required type="number" step="any" name="time" min="0" max="59" ng-model="group.time.minute">
+            </md-input-container>
+              <md-radio-group ng-model="group.time.ampm" required>
+                <md-radio-button value="AM"> AM </md-radio-button>
+                <md-radio-button value="PM"> PM </md-radio-button>
+              </md-radio-group>
+            </div>
+            <div layout="row" layout-align="start end">
+              <md-button ng-click="createAlarm(alarmForm.$valid, key, group.time)" name="submit" 
+       id="submit" value="Save" type="submit" class="md-fab md-primary">
+               SET 
+              </md-button>
+            </div>
+          </form>
+          <div layout="row" ng-repeat="schedule in schedules | belongsToGroup:key" ng-mouseover="schedule.showDelete = true" ng-mouseout="schedule.showDelete = false">
+            <md-switch ng-true-value="'enabled'" ng-false-value="'disabled'" ng-model="schedule.status" aria-label="Switch 1" ng-change="changeAlarmStatus(schedule.status, schedule.name.split(' ')[1])">
+            </md-switch>
+            <p>{{schedule.localtime.toString().split('T')[1]}}</p>
+            <md-button ng-show="schedule.showDelete" ng-click="deleteAlarm(schedule.name.split(' ')[1])" class="md-warn">x</md-button>
+          </div> 
+        </md-card-content>
+      </md-card> 
+    </div>
+  </md-content>
+
+
+</div>
